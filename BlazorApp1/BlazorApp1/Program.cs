@@ -2,6 +2,8 @@ using BlazorApp1.Client.Pages;
 using BlazorApp1.Components;
 using BlazorApp1.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ExcelDataService>();
 builder.Services.AddHostedService<TelegramBotService>();
+builder.Services.AddResponseCompression();
 
 // Register HttpClient for server-side components
 builder.Services.AddScoped(sp =>
@@ -27,6 +30,8 @@ builder.Services.AddRazorComponents()
 
 var app = builder.Build();
 
+app.UseResponseCompression();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -37,7 +42,13 @@ else
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=604800");
+    }
+});
 app.UseAntiforgery();
 
 app.MapControllers();

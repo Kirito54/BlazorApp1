@@ -13,3 +13,7 @@ dotnet run --project BlazorApp1/BlazorApp1 -c Release
 ```
 
 When you send an Excel file to the bot, it checks the file for personal data patterns and responds with a confirmation or an error message.
+
+## Optimizations
+
+The server uses response compression and ships only minified client assets to reduce bandwidth usage.
