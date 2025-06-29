@@ -1,6 +1,6 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: linear-gradient(90deg, #0039a6 0%, #ffffff 50%, #ee1c25 100%);
+    background-color: #ADD8E6;
 }
 
 a, .btn-link {
