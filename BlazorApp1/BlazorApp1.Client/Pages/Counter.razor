@@ -2,11 +2,11 @@
 
 <PageTitle>Counter</PageTitle>
 
-<MudCard Class="my-card pa-4">
-    <MudText Typo="Typo.h5">Counter</MudText>
-    <MudText Role="status">Current count: @currentCount</MudText>
-    <MudButton Variant="Variant.Filled" OnClick="IncrementCount">Click me</MudButton>
-</MudCard>
+<div class="card p-4">
+    <h5 class="card-title">Counter</h5>
+    <p role="status">Current count: @currentCount</p>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</div>
 
 @code {
     private int currentCount = 0;
