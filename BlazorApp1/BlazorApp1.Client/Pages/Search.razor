@@ -15,6 +15,11 @@
     <button class="btn btn-primary" @onclick="SearchAsync">Найти</button>
 </div>
 
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-warning">@ErrorMessage</div>
+}
+
 @if (Results?.Any() == true)
 {
     <div class="card p-4 mt-4">
@@ -69,16 +74,27 @@
     private string MfcNumber { get; set; } = string.Empty;
     private List<QueueInfo>? Results;
 
+    private string ErrorMessage { get; set; } = string.Empty;
+
     private bool ShowDateDialog;
     private List<string> DateOptions = new();
 
     private async Task SearchAsync()
     {
-        if (string.IsNullOrWhiteSpace(OrderNumber)) return;
+        ErrorMessage = string.Empty;
+        if (string.IsNullOrWhiteSpace(OrderNumber))
+        {
+            ErrorMessage = "Введите номер распоряжения";
+            return;
+        }
         var url = $"api/search?orderNumber={Uri.EscapeDataString(OrderNumber)}";
         if (!string.IsNullOrWhiteSpace(MfcNumber))
             url += $"&mfcNumber={Uri.EscapeDataString(MfcNumber)}";
         Results = await Http.GetFromJsonAsync<List<QueueInfo>>(url);
+        if (Results == null || Results.Count == 0)
+        {
+            ErrorMessage = "Ничего не найдено";
+        }
         var dates = Results?.Select(r => r.OrderNumber).Distinct().ToList();
         if (dates != null && dates.Count > 1)
         {
