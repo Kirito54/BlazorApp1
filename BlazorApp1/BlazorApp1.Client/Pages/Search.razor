@@ -2,44 +2,67 @@
 
 @inject HttpClient Http
 @using BlazorApp1.Client.Models
-@using MudBlazor
 
-<MudCard Class="my-card pa-4 mb-4">
-    <MudTextField @bind-Value="OrderNumber" Label="Номер распоряжения" Variant="Variant.Outlined" />
-</MudCard>
-<MudCard Class="my-card pa-4 mb-4">
-    <MudTextField @bind-Value="MfcNumber" Label="Номер МФЦ" Variant="Variant.Outlined" />
-</MudCard>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SearchAsync">Найти</MudButton>
+<div class="card p-4 mb-4">
+    <div class="mb-3">
+        <label class="form-label">Номер распоряжения</label>
+        <input class="form-control" @bind="OrderNumber" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Номер МФЦ</label>
+        <input class="form-control" @bind="MfcNumber" />
+    </div>
+    <button class="btn btn-primary" @onclick="SearchAsync">Найти</button>
+</div>
 
 @if (Results?.Any() == true)
 {
-    <MudCard Class="my-card pa-4 mt-4">
-    <MudTable Items="Results">
-        <HeaderContent>
-            <MudTh>Номер очереди</MudTh>
-            <MudTh>Номер МФЦ</MudTh>
-            <MudTh>Номер распоряжения</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Номер очереди">@context.QueueNumber</MudTd>
-            <MudTd DataLabel="Номер МФЦ">@context.MfcNumber</MudTd>
-            <MudTd DataLabel="Номер распоряжения">@context.OrderNumber</MudTd>
-        </RowTemplate>
-    </MudTable>
-    </MudCard>
+    <div class="card p-4 mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Номер очереди</th>
+                <th>Номер МФЦ</th>
+                <th>Номер распоряжения</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Results)
+            {
+                <tr>
+                    <td>@item.QueueNumber</td>
+                    <td>@item.MfcNumber</td>
+                    <td>@item.OrderNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
 }
 
-<MudDialog @bind-IsVisible="ShowDateDialog">
-    <DialogContent>
-        <MudList T="string">
-            @foreach (var item in DateOptions)
-            {
-                <MudListItem T="string" OnClick="() => SelectDate(item)">@item</MudListItem>
-            }
-        </MudList>
-    </DialogContent>
-</MudDialog>
+@if (ShowDateDialog)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выберите дату</h5>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        @foreach (var item in DateOptions)
+                        {
+                            <li class="list-group-item">
+                                <button class="btn btn-link" @onclick="() => SelectDate(item)">@item</button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
 
 @code {
     private string OrderNumber { get; set; } = string.Empty;

@@ -3,14 +3,12 @@ using BlazorApp1.Components;
 using BlazorApp1.Services;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ExcelDataService>();
-builder.Services.AddMudServices();
 
 // Register HttpClient for server-side components
 builder.Services.AddScoped(sp =>
