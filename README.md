@@ -12,4 +12,4 @@ This ASP.NET server hosts a Telegram bot that accepts Excel files.
 dotnet run --project BlazorApp1/BlazorApp1 -c Release
 ```
 
-When you send an Excel file to the bot, it checks the file for personal data patterns and responds with a confirmation or an error message.
+When you send an Excel file to the bot, it checks the file for personal data patterns and responds with a confirmation or an error message. The last valid file is stored on disk and loaded on server start so searches continue to work after a restart.
