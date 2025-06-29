@@ -17,3 +17,5 @@ When you send an Excel file to the bot, it checks the file for personal data pat
 ## Optimizations
 
 The server uses response compression and ships only minified client assets to reduce bandwidth usage.
+
+When you send an Excel file to the bot, it checks the file for personal data patterns and responds with a confirmation or an error message. The last valid file is stored on disk and loaded on server start so searches continue to work after a restart.
