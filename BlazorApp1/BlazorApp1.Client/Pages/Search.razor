@@ -4,7 +4,7 @@
 @using BlazorApp1.Client.Models
 @using MudBlazor
 
-<MudCard Class="pa-4">
+<MudCard Class="my-card pa-4">
     <MudTextField @bind-Value="OrderNumber" Label="Номер распоряжения" Variant="Variant.Outlined" Class="mb-2" />
     <MudTextField @bind-Value="MfcNumber" Label="Номер МФЦ" Variant="Variant.Outlined" Class="mb-2" />
     <MudButton Variant="Variant.Filled" OnClick="SearchAsync">Найти</MudButton>
@@ -12,6 +12,7 @@
 
 @if (Results?.Any() == true)
 {
+    <MudCard Class="my-card pa-4 mt-4">
     <MudTable Items="Results">
         <HeaderContent>
             <MudTh>Номер очереди</MudTh>
@@ -24,6 +25,7 @@
             <MudTd DataLabel="Номер распоряжения">@context.OrderNumber</MudTd>
         </RowTemplate>
     </MudTable>
+    </MudCard>
 }
 
 <MudDialog @bind-IsVisible="ShowDateDialog">
