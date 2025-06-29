@@ -15,7 +15,7 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Search([FromQuery] string orderNumber, [FromQuery] string? mfcNumber)
+    public IActionResult Search([FromQuery] string? orderNumber, [FromQuery] string? mfcNumber)
     {
         var records = _excel.Search(orderNumber, mfcNumber);
         return Ok(records);

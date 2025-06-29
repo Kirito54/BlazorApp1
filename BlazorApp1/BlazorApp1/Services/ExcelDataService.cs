@@ -54,13 +54,25 @@ public class ExcelDataService
         return PersonalDataPatterns.Any(p => p.IsMatch(value));
     }
 
-    public IEnumerable<QueueInfo> Search(string orderNumber, string? mfcNumber)
+    public IEnumerable<QueueInfo> Search(string? orderNumber, string? mfcNumber)
     {
-        var matches = _records.Where(r => r.OrderNumber.Contains(orderNumber, StringComparison.OrdinalIgnoreCase));
-        if (!string.IsNullOrEmpty(mfcNumber))
+        IEnumerable<QueueInfo> matches = _records;
+
+        if (!string.IsNullOrWhiteSpace(orderNumber))
+        {
+            matches = matches.Where(r => r.OrderNumber.Contains(orderNumber, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(mfcNumber))
         {
             matches = matches.Where(r => r.MfcNumber.Contains(mfcNumber, StringComparison.OrdinalIgnoreCase));
         }
+
+        if (string.IsNullOrWhiteSpace(orderNumber) && string.IsNullOrWhiteSpace(mfcNumber))
+        {
+            return Enumerable.Empty<QueueInfo>();
+        }
+
         return matches.ToList();
     }
 }
