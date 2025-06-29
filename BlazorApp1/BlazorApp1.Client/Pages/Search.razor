@@ -82,14 +82,19 @@
     private async Task SearchAsync()
     {
         ErrorMessage = string.Empty;
-        if (string.IsNullOrWhiteSpace(OrderNumber))
+        if (string.IsNullOrWhiteSpace(OrderNumber) && string.IsNullOrWhiteSpace(MfcNumber))
         {
-            ErrorMessage = "Введите номер распоряжения";
+            ErrorMessage = "Введите номер распоряжения или МФЦ";
             return;
         }
-        var url = $"api/search?orderNumber={Uri.EscapeDataString(OrderNumber)}";
+        var url = "api/search?";
+        if (!string.IsNullOrWhiteSpace(OrderNumber))
+            url += $"orderNumber={Uri.EscapeDataString(OrderNumber)}";
         if (!string.IsNullOrWhiteSpace(MfcNumber))
-            url += $"&mfcNumber={Uri.EscapeDataString(MfcNumber)}";
+        {
+            if (!url.EndsWith("?")) url += "&";
+            url += $"mfcNumber={Uri.EscapeDataString(MfcNumber)}";
+        }
         Results = await Http.GetFromJsonAsync<List<QueueInfo>>(url);
         if (Results == null || Results.Count == 0)
         {
