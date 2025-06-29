@@ -1,0 +1,69 @@
+@page "/search"
+
+@inject HttpClient Http
+@using BlazorApp1.Client.Models
+@using MudBlazor
+
+<MudCard Class="pa-4">
+    <MudTextField @bind-Value="OrderNumber" Label="Номер распоряжения" Variant="Variant.Outlined" Class="mb-2" />
+    <MudTextField @bind-Value="MfcNumber" Label="Номер МФЦ" Variant="Variant.Outlined" Class="mb-2" />
+    <MudButton Variant="Variant.Filled" OnClick="SearchAsync">Найти</MudButton>
+</MudCard>
+
+@if (Results?.Any() == true)
+{
+    <MudTable Items="Results">
+        <HeaderContent>
+            <MudTh>Номер очереди</MudTh>
+            <MudTh>Номер МФЦ</MudTh>
+            <MudTh>Номер распоряжения</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Номер очереди">@context.QueueNumber</MudTd>
+            <MudTd DataLabel="Номер МФЦ">@context.MfcNumber</MudTd>
+            <MudTd DataLabel="Номер распоряжения">@context.OrderNumber</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+<MudDialog @bind-IsVisible="ShowDateDialog">
+    <DialogContent>
+        <MudList T="string">
+            @foreach (var item in DateOptions)
+            {
+                <MudListItem T="string" OnClick="() => SelectDate(item)">@item</MudListItem>
+            }
+        </MudList>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private string OrderNumber { get; set; } = string.Empty;
+    private string MfcNumber { get; set; } = string.Empty;
+    private List<QueueInfo>? Results;
+
+    private bool ShowDateDialog;
+    private List<string> DateOptions = new();
+
+    private async Task SearchAsync()
+    {
+        if (string.IsNullOrWhiteSpace(OrderNumber)) return;
+        var url = $"api/search?orderNumber={Uri.EscapeDataString(OrderNumber)}";
+        if (!string.IsNullOrWhiteSpace(MfcNumber))
+            url += $"&mfcNumber={Uri.EscapeDataString(MfcNumber)}";
+        Results = await Http.GetFromJsonAsync<List<QueueInfo>>(url);
+        var dates = Results?.Select(r => r.OrderNumber).Distinct().ToList();
+        if (dates != null && dates.Count > 1)
+        {
+            DateOptions = dates;
+            ShowDateDialog = true;
+        }
+    }
+
+    private void SelectDate(string date)
+    {
+        Results = Results?.Where(r => r.OrderNumber == date).ToList();
+        ShowDateDialog = false;
+        StateHasChanged();
+    }
+}
