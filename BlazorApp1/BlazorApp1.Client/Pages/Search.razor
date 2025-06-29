@@ -10,7 +10,7 @@
 <MudCard Class="my-card pa-4 mb-4">
     <MudTextField @bind-Value="MfcNumber" Label="Номер МФЦ" Variant="Variant.Outlined" />
 </MudCard>
-<MudButton Variant="Variant.Filled" OnClick="SearchAsync">Найти</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SearchAsync">Найти</MudButton>
 
 @if (Results?.Any() == true)
 {
