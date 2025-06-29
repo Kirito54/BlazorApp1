@@ -1,12 +1,21 @@
 using BlazorApp1.Client.Pages;
 using BlazorApp1.Components;
 using BlazorApp1.Services;
+using Microsoft.AspNetCore.Components;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ExcelDataService>();
+
+// Register HttpClient for server-side components
+builder.Services.AddScoped(sp =>
+{
+    var navigationManager = sp.GetRequiredService<NavigationManager>();
+    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+});
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents(options =>
