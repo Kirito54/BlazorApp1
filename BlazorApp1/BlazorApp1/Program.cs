@@ -1,12 +1,11 @@
 using BlazorApp1.Client.Pages;
 using BlazorApp1.Components;
-using BlazorApp1.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddSingleton<ExcelDataService>();
+// No API endpoints are required
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents(options =>
@@ -29,8 +28,6 @@ else
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
-app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
