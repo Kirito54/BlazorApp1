@@ -9,7 +9,10 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<ExcelDataService>();
 
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
+    .AddInteractiveServerComponents(options =>
+    {
+        options.DetailedErrors = true;
+    })
     .AddInteractiveWebAssemblyComponents();
 
 var app = builder.Build();
