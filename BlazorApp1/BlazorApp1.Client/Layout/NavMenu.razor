@@ -1,9 +1,9 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg flex-column">
     <a class="navbar-brand px-3" href="">BlazorApp1</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="sidebarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="sidebarNav">
+    <div class="@NavMenuCssClass" id="sidebarNav">
         <ul class="navbar-nav flex-column w-100">
             <li class="nav-item">
                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -33,3 +33,14 @@
         </ul>
     </div>
 </nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse navbar-collapse" : "navbar-collapse";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
