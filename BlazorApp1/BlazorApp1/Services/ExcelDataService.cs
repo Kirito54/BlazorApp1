@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using System.IO;
 using BlazorApp1.Models;
 using ClosedXML.Excel;
 
@@ -8,17 +9,40 @@ public class ExcelDataService
 {
     private readonly ILogger<ExcelDataService> _logger;
     private readonly List<QueueInfo> _records = new();
+    private const string SavedFile = "data/latest.xlsx";
 
     public ExcelDataService(ILogger<ExcelDataService> logger)
     {
         _logger = logger;
+        TryLoadFromDisk();
     }
 
     public IReadOnlyList<QueueInfo> Records => _records;
 
     public async Task<bool> LoadAsync(Stream stream)
     {
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        ms.Position = 0;
+
+        var newRecords = new List<QueueInfo>();
+        if (!LoadFromStream(ms, newRecords))
+        {
+            return false;
+        }
         _records.Clear();
+        _records.AddRange(newRecords);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(SavedFile)!);
+        ms.Position = 0;
+        using var fs = new FileStream(SavedFile, FileMode.Create, FileAccess.Write, FileShare.None);
+        await ms.CopyToAsync(fs);
+
+        return true;
+    }
+
+    private bool LoadFromStream(Stream stream, List<QueueInfo> target)
+    {
         using var workbook = new XLWorkbook(stream);
         var ws = workbook.Worksheets.First();
         foreach (var row in ws.RowsUsed().Skip(1))
@@ -30,7 +54,7 @@ public class ExcelDataService
             {
                 return false;
             }
-            _records.Add(new QueueInfo
+            target.Add(new QueueInfo
             {
                 QueueNumber = queue,
                 MfcNumber = mfc,
@@ -38,6 +62,26 @@ public class ExcelDataService
             });
         }
         return true;
+    }
+
+    private void TryLoadFromDisk()
+    {
+        if (!File.Exists(SavedFile))
+            return;
+        try
+        {
+            using var fs = new FileStream(SavedFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var newRecords = new List<QueueInfo>();
+            if (LoadFromStream(fs, newRecords))
+            {
+                _records.Clear();
+                _records.AddRange(newRecords);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load Excel data from disk");
+        }
     }
 
     private static readonly Regex[] PersonalDataPatterns =
