@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ExcelDataService>();
+builder.Services.AddHostedService<TelegramBotService>();
 
 // Register HttpClient for server-side components
 builder.Services.AddScoped(sp =>
