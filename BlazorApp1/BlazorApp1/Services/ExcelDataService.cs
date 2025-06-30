@@ -98,13 +98,26 @@ public class ExcelDataService
         return PersonalDataPatterns.Any(p => p.IsMatch(value));
     }
 
+    private static string ExtractOrderDigits(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+        var match = Regex.Match(value, @"^\d+");
+        return match.Success ? match.Value : string.Empty;
+    }
+
     public IEnumerable<QueueInfo> Search(string? orderNumber, string? mfcNumber)
     {
         IEnumerable<QueueInfo> matches = _records;
 
         if (!string.IsNullOrWhiteSpace(orderNumber))
         {
-            matches = matches.Where(r => string.Equals(r.OrderNumber, orderNumber, StringComparison.OrdinalIgnoreCase));
+            var digits = ExtractOrderDigits(orderNumber);
+            if (string.IsNullOrEmpty(digits))
+            {
+                return Enumerable.Empty<QueueInfo>();
+            }
+            matches = matches.Where(r =>
+                string.Equals(ExtractOrderDigits(r.OrderNumber), digits, StringComparison.OrdinalIgnoreCase));
         }
 
         if (!string.IsNullOrWhiteSpace(mfcNumber))
