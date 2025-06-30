@@ -21,3 +21,8 @@
 .navbar.bg-dark {
     background: linear-gradient(182.54deg, #1F50E8 20.95%, #7996F0 134.42%) !important;
 }
+
+.sevastopol-emblem {
+    height: 32px;
+    width: 32px;
+}
