@@ -5,7 +5,8 @@ This ASP.NET server hosts a Telegram bot that accepts Excel files.
 ## Running
 
 1. Obtain a Telegram bot token from [@BotFather](https://t.me/BotFather).
-2. Set the environment variable `TELEGRAM_BOT_TOKEN` with the token value.
+2. Provide the token using either the `TELEGRAM_BOT_TOKEN` environment variable
+   or by placing it in `appsettings.json` under `TelegramBot:Token`.
 3. Build and run the server:
 
 ```bash
