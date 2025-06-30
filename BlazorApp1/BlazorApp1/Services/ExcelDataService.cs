@@ -103,6 +103,7 @@ public class ExcelDataService
     private static string ExtractOrderDigits(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+        value = value.Trim();
         var match = Regex.Match(value, @"^\d+");
         return match.Success ? match.Value : string.Empty;
     }
