@@ -10,7 +10,7 @@ main {
 
 .sidebar {
     background-color: transparent;
-    text-align: center;
+    text-align: left;
 }
 
 .top-row {
@@ -57,7 +57,7 @@ main {
         height: 100vh;
         position: sticky;
         top: 0;
-        text-align: center;
+        text-align: left;
     }
 
     .top-row {
