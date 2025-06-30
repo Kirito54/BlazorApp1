@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 # Uploaded Excel file
 /data/
+/BlazorApp1/BlazorApp1/appsettings.json
+*.xlsx
