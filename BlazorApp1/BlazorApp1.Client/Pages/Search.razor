@@ -92,11 +92,11 @@
         }
         var url = "api/search?";
         if (!string.IsNullOrWhiteSpace(OrderNumber))
-            url += $"orderNumber={Uri.EscapeDataString(OrderNumber)}";
+            url += $"orderNumber={Uri.EscapeDataString(OrderNumber.Trim())}";
         if (!string.IsNullOrWhiteSpace(MfcNumber))
         {
             if (!url.EndsWith("?")) url += "&";
-            url += $"mfcNumber={Uri.EscapeDataString(MfcNumber)}";
+            url += $"mfcNumber={Uri.EscapeDataString(MfcNumber.Trim())}";
         }
         try
         {
