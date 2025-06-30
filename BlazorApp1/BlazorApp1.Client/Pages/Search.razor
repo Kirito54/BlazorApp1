@@ -98,18 +98,29 @@
             if (!url.EndsWith("?")) url += "&";
             url += $"mfcNumber={Uri.EscapeDataString(MfcNumber)}";
         }
-        var response = await Http.GetFromJsonAsync<SearchResponse>(url);
-        Results = response?.Records;
-        TotalCount = response?.TotalCount ?? 0;
-        if (Results == null || Results.Count == 0)
+        try
         {
-            ErrorMessage = "Ничего не найдено";
+            var response = await Http.GetFromJsonAsync<SearchResponse>(url);
+            Results = response?.Records;
+            TotalCount = response?.TotalCount ?? 0;
+            if (Results == null || Results.Count == 0)
+            {
+                ErrorMessage = "Ничего не найдено";
+            }
+            var dates = Results?.Select(r => r.ApplicationDate).Distinct().ToList();
+            if (dates != null && dates.Count > 1)
+            {
+                DateOptions = dates;
+                ShowDateDialog = true;
+            }
         }
-        var dates = Results?.Select(r => r.ApplicationDate).Distinct().ToList();
-        if (dates != null && dates.Count > 1)
+        catch (HttpRequestException ex)
         {
-            DateOptions = dates;
-            ShowDateDialog = true;
+            ErrorMessage = $"Ошибка запроса: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Не удалось выполнить поиск: {ex.Message}";
         }
     }
 
