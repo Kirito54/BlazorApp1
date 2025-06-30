@@ -23,11 +23,13 @@
 @if (Results?.Any() == true)
 {
     <div class="card p-4 mt-4">
+    <p>Общее количество заявлений в очереди: @TotalCount</p>
     <table class="table">
         <thead>
             <tr>
                 <th>Номер очереди</th>
                 <th>Номер МФЦ</th>
+                <th>Дата заявления</th>
                 <th>Номер распоряжения</th>
             </tr>
         </thead>
@@ -37,6 +39,7 @@
                 <tr>
                     <td>@item.QueueNumber</td>
                     <td>@item.MfcNumber</td>
+                    <td>@item.ApplicationDate</td>
                     <td>@item.OrderNumber</td>
                 </tr>
             }
@@ -73,6 +76,7 @@
     private string OrderNumber { get; set; } = string.Empty;
     private string MfcNumber { get; set; } = string.Empty;
     private List<QueueInfo>? Results;
+    private int TotalCount;
 
     private string ErrorMessage { get; set; } = string.Empty;
 
@@ -95,12 +99,14 @@
             if (!url.EndsWith("?")) url += "&";
             url += $"mfcNumber={Uri.EscapeDataString(MfcNumber)}";
         }
-        Results = await Http.GetFromJsonAsync<List<QueueInfo>>(url);
+        var response = await Http.GetFromJsonAsync<SearchResponse>(url);
+        Results = response?.Records;
+        TotalCount = response?.TotalCount ?? 0;
         if (Results == null || Results.Count == 0)
         {
             ErrorMessage = "Ничего не найдено";
         }
-        var dates = Results?.Select(r => r.OrderNumber).Distinct().ToList();
+        var dates = Results?.Select(r => r.ApplicationDate).Distinct().ToList();
         if (dates != null && dates.Count > 1)
         {
             DateOptions = dates;
@@ -110,7 +116,7 @@
 
     private void SelectDate(string date)
     {
-        Results = Results?.Where(r => r.OrderNumber == date).ToList();
+        Results = Results?.Where(r => r.ApplicationDate == date).ToList();
         ShowDateDialog = false;
         StateHasChanged();
     }

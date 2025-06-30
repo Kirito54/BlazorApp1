@@ -4,5 +4,6 @@ public class QueueInfo
 {
     public string QueueNumber { get; set; } = string.Empty;
     public string MfcNumber { get; set; } = string.Empty;
+    public string ApplicationDate { get; set; } = string.Empty;
     public string OrderNumber { get; set; } = string.Empty; // with date
 }

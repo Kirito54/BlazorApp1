@@ -49,8 +49,9 @@ public class ExcelDataService
         {
             var queue = row.Cell(1).GetString();
             var mfc = row.Cell(2).GetString();
-            var order = row.Cell(3).GetString();
-            if (ContainsPersonalData(queue) || ContainsPersonalData(mfc) || ContainsPersonalData(order))
+            var date = row.Cell(3).GetString();
+            var order = row.Cell(4).GetString();
+            if (ContainsPersonalData(queue) || ContainsPersonalData(mfc) || ContainsPersonalData(date) || ContainsPersonalData(order))
             {
                 return false;
             }
@@ -58,6 +59,7 @@ public class ExcelDataService
             {
                 QueueNumber = queue,
                 MfcNumber = mfc,
+                ApplicationDate = date,
                 OrderNumber = order
             });
         }

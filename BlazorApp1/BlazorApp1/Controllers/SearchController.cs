@@ -1,5 +1,7 @@
 using BlazorApp1.Services;
+using BlazorApp1.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BlazorApp1.Controllers;
 
@@ -15,9 +17,17 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Search([FromQuery] string? orderNumber, [FromQuery] string? mfcNumber)
+    public ActionResult<SearchResponse> Search([FromQuery] string? orderNumber, [FromQuery] string? mfcNumber)
     {
-        var records = _excel.Search(orderNumber, mfcNumber);
-        return Ok(records);
+        var records = _excel.Search(orderNumber, mfcNumber).ToList();
+        var max = _excel.Records
+            .Select(r => int.TryParse(r.QueueNumber, out var n) ? n : 0)
+            .DefaultIfEmpty(0)
+            .Max();
+        return new SearchResponse
+        {
+            Records = records,
+            TotalCount = max
+        };
     }
 }
