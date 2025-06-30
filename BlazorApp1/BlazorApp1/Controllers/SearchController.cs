@@ -16,6 +16,12 @@ public class SearchController : ControllerBase
         _excel = excel;
     }
 
+    [HttpGet("count")]
+    public ActionResult<int> GetCount()
+    {
+        return _excel.GetTotalCount();
+    }
+
     [HttpGet]
     public ActionResult<SearchResponse> Search([FromQuery] string? orderNumber, [FromQuery] string? mfcNumber)
     {

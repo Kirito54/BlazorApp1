@@ -19,6 +19,14 @@ public class ExcelDataService
 
     public IReadOnlyList<QueueInfo> Records => _records;
 
+    public int GetTotalCount()
+    {
+        return _records
+            .Select(r => int.TryParse(r.QueueNumber, out var n) ? n : 0)
+            .DefaultIfEmpty(0)
+            .Max();
+    }
+
     public async Task<bool> LoadAsync(Stream stream)
     {
         using var ms = new MemoryStream();
