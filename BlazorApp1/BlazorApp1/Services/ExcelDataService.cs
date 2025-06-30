@@ -104,12 +104,12 @@ public class ExcelDataService
 
         if (!string.IsNullOrWhiteSpace(orderNumber))
         {
-            matches = matches.Where(r => r.OrderNumber.Contains(orderNumber, StringComparison.OrdinalIgnoreCase));
+            matches = matches.Where(r => string.Equals(r.OrderNumber, orderNumber, StringComparison.OrdinalIgnoreCase));
         }
 
         if (!string.IsNullOrWhiteSpace(mfcNumber))
         {
-            matches = matches.Where(r => r.MfcNumber.Contains(mfcNumber, StringComparison.OrdinalIgnoreCase));
+            matches = matches.Where(r => string.Equals(r.MfcNumber, mfcNumber, StringComparison.OrdinalIgnoreCase));
         }
 
         if (string.IsNullOrWhiteSpace(orderNumber) && string.IsNullOrWhiteSpace(mfcNumber))
