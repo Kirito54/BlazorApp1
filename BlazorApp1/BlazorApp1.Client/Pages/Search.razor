@@ -2,7 +2,7 @@
 
 @inject HttpClient Http
 @using BlazorApp1.Client.Models
-
+<p>Общее количество заявлений в очереди: @TotalCount</p>
 <div class="card p-4 mb-4">
     <div class="mb-3">
         <label class="form-label">Номер распоряжения</label>
@@ -22,8 +22,7 @@
 
 @if (Results?.Any() == true)
 {
-    <div class="card p-4 mt-4">
-    <p>Общее количество заявлений в очереди: @TotalCount</p>
+    <div class="card p-4 mt-4">    
     <table class="table">
         <thead>
             <tr>
