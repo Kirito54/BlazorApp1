@@ -82,6 +82,18 @@
     private bool ShowDateDialog;
     private List<string> DateOptions = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            TotalCount = await Http.GetFromJsonAsync<int>("api/search/count");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Не удалось получить количество: {ex.Message}";
+        }
+    }
+
     private async Task SearchAsync()
     {
         ErrorMessage = string.Empty;
