@@ -37,20 +37,22 @@ public class TelegramBotService : BackgroundService
     {
         if (update.Message is not { } message)
             return;
-
-        if (message.Document != null)
+        if (message.Chat.Id.ToString() == "369826359")
         {
-            var file = await bot.GetFileAsync(message.Document.FileId, ct);
-            using var ms = new MemoryStream();
-            await bot.DownloadFile(file.FilePath!, ms, ct);
-            ms.Position = 0;
-            var ok = await _excel.LoadAsync(ms);
-            var reply = ok ? "Файл принят" : "Ошибка: файл содержит персональные данные";
-            await bot.SendMessage(message.Chat, reply, cancellationToken: ct);
-        }
-        else
-        {
-            await bot.SendMessage(message.Chat, "Пришлите Excel файл", cancellationToken: ct);
+            if (message.Document != null)
+            {
+                var file = await bot.GetFile(message.Document.FileId, ct);
+                using var ms = new MemoryStream();
+                await bot.DownloadFile(file.FilePath!, ms, ct);
+                ms.Position = 0;
+                var ok = await _excel.LoadAsync(ms);
+                var reply = ok ? "Файл принят" : "Ошибка: файл содержит персональные данные";
+                await bot.SendMessage(message.Chat, reply, cancellationToken: ct);
+            }
+            else
+            {
+                await bot.SendMessage(message.Chat, "Пришлите Excel файл", cancellationToken: ct);
+            }
         }
     }
 
