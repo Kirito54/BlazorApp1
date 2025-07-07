@@ -2,7 +2,7 @@
 
 @inject HttpClient Http
 @using BlazorApp1.Client.Models
-<p>Общее количество заявлений в очереди: @TotalCount</p>
+@* <p>Общее количество заявлений в очереди: @TotalCount</p>  *@ @*Убрать общую очередь*@
 <div class="card p-4 mb-4">
     <div class="mb-3">
         <label class="form-label">Номер распоряжения</label>
@@ -82,17 +82,17 @@
     private bool ShowDateDialog;
     private List<string> DateOptions = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            TotalCount = await Http.GetFromJsonAsync<int>("api/search/count");
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Не удалось получить количество: {ex.Message}";
-        }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         TotalCount = await Http.GetFromJsonAsync<int>("api/search/count");
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         ErrorMessage = $"Не удалось получить количество: {ex.Message}";
+    //     }
+    // }
 
     private async Task SearchAsync()
     {
@@ -119,7 +119,7 @@
             {
                 ErrorMessage = "Ничего не найдено";
             }
-            var dates = Results?.Select(r => r.ApplicationDate).Distinct().ToList();
+            var dates = Results?.Select(r => r.OrderNumber).Distinct().ToList();
             if (dates != null && dates.Count > 1)
             {
                 DateOptions = dates;
@@ -138,7 +138,7 @@
 
     private void SelectDate(string date)
     {
-        Results = Results?.Where(r => r.ApplicationDate == date).ToList();
+        Results = Results?.Where(r => r.OrderNumber == date).ToList(); // Переделать на номер распоряжения
         ShowDateDialog = false;
         StateHasChanged();
     }
