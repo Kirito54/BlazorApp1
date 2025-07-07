@@ -47,20 +47,20 @@
     </div>
 }
 
-@if (ShowDateDialog)
+@if (ShowOrderDialog)
 {
     <div class="modal fade show d-block" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Выберите дату</h5>
+                    <h5 class="modal-title">Выберите распоряжение</h5>
                 </div>
                 <div class="modal-body">
                     <ul class="list-group">
-                        @foreach (var item in DateOptions)
+                        @foreach (var item in OrderOptions)
                         {
                             <li class="list-group-item">
-                                <button class="btn btn-link" @onclick="() => SelectDate(item)">@item</button>
+                                <button class="btn btn-link" @onclick="() => SelectOrder(item)">@item</button>
                             </li>
                         }
                     </ul>
@@ -79,8 +79,8 @@
 
     private string ErrorMessage { get; set; } = string.Empty;
 
-    private bool ShowDateDialog;
-    private List<string> DateOptions = new();
+    private bool ShowOrderDialog;
+    private List<string> OrderOptions = new();
 
     // protected override async Task OnInitializedAsync()
     // {
@@ -119,11 +119,15 @@
             {
                 ErrorMessage = "Ничего не найдено";
             }
-            var dates = Results?.Select(r => r.OrderNumber).Distinct().ToList();
-            if (dates != null && dates.Count > 1)
+            var options = Results?
+                .Select(r => r.OrderNumber)
+                .Where(d => !string.IsNullOrWhiteSpace(d))
+                .Distinct()
+                .ToList();
+            if (options != null && options.Count > 1)
             {
-                DateOptions = dates;
-                ShowDateDialog = true;
+                OrderOptions = options;
+                ShowOrderDialog = true;
             }
         }
         catch (HttpRequestException ex)
@@ -136,10 +140,12 @@
         }
     }
 
-    private void SelectDate(string date)
+    private void SelectOrder(string order)
     {
-        Results = Results?.Where(r => r.OrderNumber == date).ToList(); // Переделать на номер распоряжения
-        ShowDateDialog = false;
+        Results = Results?
+            .Where(r => r.OrderNumber == order)
+            .ToList();
+        ShowOrderDialog = false;
         StateHasChanged();
     }
 }
