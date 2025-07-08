@@ -1,3 +1,4 @@
+
 .page {
     position: relative;
     display: flex;
@@ -8,9 +9,6 @@ main {
     flex: 1;
 }
 
-.sidebar {
-    text-align: left;
-}
 
 .top-row {
     background-color: #f7f7f7;
@@ -48,16 +46,9 @@ main {
 
 @media (min-width: 641px) {
     .page {
-        flex-direction: row;
+        flex-direction: column;
     }
 
-    .sidebar {
-        width: 300px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-        text-align: left;
-    }
 
     .top-row {
         position: sticky;
