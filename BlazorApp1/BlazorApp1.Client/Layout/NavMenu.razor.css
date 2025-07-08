@@ -42,3 +42,15 @@
 .navbar-nav .nav-link .bi {
     margin-right: 0;
 }
+
+.sidebar-offcanvas {
+    width: 250px;
+}
+
+@media (min-width: 992px) {
+    .sidebar-offcanvas {
+        position: static;
+        transform: none !important;
+        visibility: visible !important;
+    }
+}
