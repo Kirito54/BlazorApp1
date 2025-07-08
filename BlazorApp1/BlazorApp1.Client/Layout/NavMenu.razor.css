@@ -27,3 +27,8 @@
     height: 24px;
     width: 24px;
 }
+
+.navbar-nav .nav-link {
+    white-space: normal;
+    word-break: break-word;
+}
