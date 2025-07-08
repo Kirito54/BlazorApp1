@@ -29,8 +29,16 @@
 }
 
 .navbar-nav .nav-link {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    column-gap: 0.5rem;
     align-items: flex-start;
     white-space: normal;
     word-break: break-word;
+}
+
+/* Remove default margin from icons when used inside the navigation menu so that
+   text lines are indented from the left edge by the icon size when wrapping. */
+.navbar-nav .nav-link .bi {
+    margin-right: 0;
 }
