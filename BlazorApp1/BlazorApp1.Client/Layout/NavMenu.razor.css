@@ -29,6 +29,8 @@
 }
 
 .navbar-nav .nav-link {
+    display: flex;
+    align-items: flex-start;
     white-space: normal;
     word-break: break-word;
 }
