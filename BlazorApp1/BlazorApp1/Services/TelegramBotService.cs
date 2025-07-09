@@ -53,7 +53,7 @@ public class TelegramBotService : BackgroundService
             }
             else
             {
-                await bot.SendMessage(message.Chat, "Пришлите Excel файл", cancellationToken: ct);
+                await bot.SendMessage(message.Chat, "Пришлите Excel файл  в формате:Номер очереди, Входящий номер, Номер распоряжения. Без знака №", cancellationToken: ct);
             }
         }
     }

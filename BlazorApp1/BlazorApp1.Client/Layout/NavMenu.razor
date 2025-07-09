@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg flex-column">
     <a class="navbar-brand px-3 d-flex align-items-center" href="">
         <img src="https://dizo.sev.gov.ru/local/templates/adaptive/static/images/svg/sevastopol__emblem.svg" class="sevastopol-emblem" alt="Sevastopol emblem" style="width:24px" />
-        <span class="ms-2">Портал земельной поддержки Севастополя</span>
+        <span class="ms-2">Земля для граждан</span>
         
     </a>
     <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="sidebarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,35 +30,36 @@
                 </NavLink>
             </li> *@
             <li class="nav-item">
-                <NavLink class="nav-link" href="search">
+                <NavLink class="nav-link" href="search" @onclick="ToggleNavMenu">
                     <span class="bi bi-search" aria-hidden="true"></span> Поиск
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="multichild">
-                    <span class="bi bi-people-fill" aria-hidden="true"></span> Многодетные
-                </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="chernobyl">
-                    <span class="bi bi-exclamation-triangle-fill" aria-hidden="true"></span> Подвергшиеся воздействию радиации вследствие катастрофы на Чернобыльской АЭС
-                </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="repressed">
-                    <span class="bi bi-person-x-fill" aria-hidden="true"></span> Подвергшиеся политическим репрессиям и принудительно выселенные из мест проживания в связи с репрессиями и впоследствии реабилитированные
-                </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="svo-participants">
+                <NavLink class="nav-link" href="svo-participants" @onclick="ToggleNavMenu">
                     <span class="bi bi-shield-fill-check" aria-hidden="true"></span> Участники специальной военной операции (СВО)
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="svo-families">
+                <NavLink class="nav-link" href="svo-families" @onclick="ToggleNavMenu">
                     <span class="bi bi-heart-fill" aria-hidden="true"></span> Члены семей погибших (умерших) участников специальной военной операции (СВО)
                 </NavLink>
             </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="multichild" @onclick="ToggleNavMenu">
+                    <span class="bi bi-people-fill" aria-hidden="true"></span> Многодетные
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="chernobyl" @onclick="ToggleNavMenu">
+                    <span class="bi bi-exclamation-triangle-fill" aria-hidden="true"></span> Подвергшиеся воздействию радиации вследствие катастрофы на Чернобыльской АЭС
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="repressed" @onclick="ToggleNavMenu">
+                    <span class="bi bi-person-x-fill" aria-hidden="true"></span> Подвергшиеся политическим репрессиям и принудительно выселенные из мест проживания в связи с репрессиями и впоследствии реабилитированные
+                </NavLink>
+            </li>
+            
         </ul>
     </div>
 </nav>
